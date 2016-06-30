@@ -29,9 +29,13 @@ public class WarenkorbTest {
         Map<Double, Double> rabatte = new HashMap<Double, Double>();
         // test no map set
         assertEquals(1.0, cart.calcKaufwertRabatt(pk, 0), DELTA);
+        assertEquals(1.0, cart.calcKaufwertRabatt(pk, 10), DELTA);
+        assertEquals(1.0, cart.calcKaufwertRabatt(pk, 30), DELTA);
         // test no rabatte
         pk.setKaufwertRabatte(rabatte);
         assertEquals(1.0, cart.calcKaufwertRabatt(pk, 0), DELTA);
+        assertEquals(1.0, cart.calcKaufwertRabatt(pk, 10), DELTA);
+        assertEquals(1.0, cart.calcKaufwertRabatt(pk, 30), DELTA);
         // test 1 stufe
         rabatte.put(10.0, 0.5);
         assertEquals(1.0, cart.calcKaufwertRabatt(pk, 9), DELTA);

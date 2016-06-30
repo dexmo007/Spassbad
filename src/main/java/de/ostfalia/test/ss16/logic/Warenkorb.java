@@ -29,6 +29,20 @@ public class Warenkorb {
     }
 
     /**
+     * ist korb leer?
+     *
+     * @return s.o.
+     */
+    public boolean isEmpty() {
+        for (Tickets tickets : totalTickets.values()) {
+            if (tickets.getGesamtAnzahl() != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Fügt dem Warenkorb ein Ticket hinzu
      *
      * @param bad    für Spassbad
@@ -196,9 +210,7 @@ public class Warenkorb {
         if (kaufwertRabatt != Collections.min(rabatte)) {
             // reach next rabattstufe - check
             double optSum = sum;
-            double[] preise = pk.getPreise();
-            Arrays.sort(preise);
-            double minPreis = preise[0];
+            double minPreis = pk.getMinPreis();
             int index = Arrays.binarySearch(rabatteArray, kaufwertRabatt);
             index = index < 0 ? 0 : index + 1;
             double nextRabattstufe = stufen[index];
@@ -227,6 +239,7 @@ public class Warenkorb {
             return 1.0;
         }
         Double[] levels = kaufwertRabatte.keySet().toArray(new Double[kaufwertRabatte.size()]);
+        Arrays.sort(levels);
         for (int i = levels.length - 1; i >= 0; i--) {
             if (sum >= levels[i]) {
                 return kaufwertRabatte.get(levels[i]);

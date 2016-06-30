@@ -1,4 +1,4 @@
-package de.ostfalia.test.ss16;
+package de.ostfalia.test.ss16.whitebox;
 
 import de.ostfalia.test.ss16.logic.Kurs;
 import de.ostfalia.test.ss16.logic.Preiskonzept;

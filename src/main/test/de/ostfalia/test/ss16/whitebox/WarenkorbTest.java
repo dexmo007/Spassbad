@@ -1,4 +1,4 @@
-package de.ostfalia.test.ss16;
+package de.ostfalia.test.ss16.whitebox;
 
 import de.ostfalia.test.ss16.logic.*;
 import org.junit.Before;
@@ -73,6 +73,8 @@ public class WarenkorbTest {
 
     @Test
     public void testCalcZehnerRest0() {
+
+        // calcZehner(..) return int[]{Auffüller, Zehner, Rest}
         Tickets tickets = new Tickets();
         int art = Tickets.EINZELKARTE;
         // no tickets
@@ -190,9 +192,24 @@ public class WarenkorbTest {
         Spassbad sb = new Spassbad("Testbad");
         sb.setPreiskonzept(pk);
         Tickets t = new Tickets();
+        // 9 einzel
+        t.addTicket(Tickets.EINZELKARTE, 9);
+        assertEquals(10.0 * 9, cart.calculatePreisForBad(sb, t), DELTA);
         // 10 einzel
-        t.addTicket(Tickets.EINZELKARTE, 10);
-        assertEquals(10.0 *10.0 * 0.95, cart.calculatePreisForBad(sb, t), DELTA);
+        t.addTicket(Tickets.EINZELKARTE, 1);
+        assertEquals(10.0 * 10 * 0.95, cart.calculatePreisForBad(sb, t), DELTA);
+        // 11 einzel
+        t.addTicket(Tickets.EINZELKARTE, 1);
+        assertEquals(10.0 * 10 * 0.95 + 10, cart.calculatePreisForBad(sb, t), DELTA);
+        // 19 einzel
+        t.addTicket(Tickets.EINZELKARTE, 8);
+        assertEquals(10.0 * 10 * 0.95 + 10.0 * 9, cart.calculatePreisForBad(sb, t), DELTA);
+        // 20 einzel
+        t.addTicket(Tickets.EINZELKARTE, 1);
+        assertEquals(10.0 * 10 * 2 * 0.95, cart.calculatePreisForBad(sb, t), DELTA);
+        // 21 einzel
+        t.addTicket(Tickets.EINZELKARTE, 1);
+        assertEquals(10.0 * 10 * 2 * 0.95 + 10, cart.calculatePreisForBad(sb, t), DELTA);
         // 10 sauna
         t = new Tickets();
         t.addTicket(Tickets.SAUNA, 10);
@@ -209,13 +226,6 @@ public class WarenkorbTest {
         t = new Tickets();
         t.addTicket(Tickets.FRUEHBAD_ERMAESSIGT, 10);
         assertEquals(10.0 * (0.8 * 7) * 0.95, cart.calculatePreisForBad(sb, t), DELTA);
-    }
-
-    @Test
-    public void testcalcKursPreise() {
-        Warenkorb cart = new Warenkorb();
-        Tickets t = new Tickets();
-
     }
 
     @Test
@@ -258,6 +268,12 @@ public class WarenkorbTest {
         // +1 einzelkarte
         t.addTicket(Tickets.EINZELKARTE, 1);
         assertEquals((10.0 * 3 + 9 * 2 + 0.8 * 2 * 10 + 7 * 2 + 0.8 * 7) * 0.95 + 0.8 * 7, cart.calculatePreisForBad(sb, t), DELTA);
+        // +2 Sauna
+        t.addTicket(Tickets.SAUNA, 2);
+        assertEquals((10.0 * 3 + 9.0 * 4 + 8.0 * 2 + 1 * 7) * 0.95 + 7 + 2 * 0.8 * 7, cart.calculatePreisForBad(sb, t), DELTA);
+        // +8 Erm
+        t.addTicket(Tickets.ERMAESSIGT, 8);
+        assertEquals((10.0 * 3 + 9.0 * 4 + 8.0 * 2 + 7) * 0.95 + (7.0 * 9 + 0.8 * 7) * 0.95 + 0.8 * 7, cart.calculatePreisForBad(sb, t), DELTA);
     }
 
     /**
@@ -286,7 +302,7 @@ public class WarenkorbTest {
         assertEquals(9.0 * 10.0, cart.calculatePreisForBad(sb, t), DELTA);
         // 10 tickets - zehner + optimizing added 1 fb-erm to get 10% off
         t.addTicket(Tickets.EINZELKARTE, 1);
-        assertEquals((95.0 + 5.6) * 0.9, cart.calculatePreisForBad(sb,t), DELTA);
+        assertEquals((95.0 + 5.6) * 0.9, cart.calculatePreisForBad(sb, t), DELTA);
         // 11 tickets - regular reach of 10%
         t.addTicket(Tickets.EINZELKARTE, 1);
         assertEquals((100.0 * 0.95 + 10.0) * 0.9, cart.calculatePreisForBad(sb, t), DELTA);

@@ -1,9 +1,6 @@
 package de.ostfalia.test.ss16.logic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Klasse zur Preiskonzept-Verwaltung
@@ -41,9 +38,25 @@ public class Preiskonzept {
      * @return preise Array
      */
     public double[] getPreise() {
-        return new double[]{preisEinzelkarte, preisEinzelkarteErmaessigt,
-                fruehbadetarif * preisEinzelkarte, saunaAufpreis,
-                fruehbadetarif * preisEinzelkarteErmaessigt};
+        return new double[]{getPreisEinzelkarte(), getPreisEinzelkarteErmaessigt(),
+                getFruehbadetarif() * getPreisEinzelkarte(), getSaunaAufpreis(),
+                getFruehbadetarif() * getPreisEinzelkarteErmaessigt()};
+    }
+
+    /**
+     * bestimmt kleinsten existierenden Preis
+     *
+     * @return min Preis
+     */
+    public double getMinPreis() {
+        double[] preise = getPreise();
+        Arrays.sort(preise);
+        for (double preis : preise) {
+            if (preis != 0.0) {
+                return preis;
+            }
+        }
+        return 0;
     }
 
     /**
@@ -52,6 +65,7 @@ public class Preiskonzept {
      * @return preis
      */
     public double getPreisEinzelkarte() {
+        if (preisEinzelkarte == null) return 0;
         return preisEinzelkarte;
     }
 
@@ -70,6 +84,9 @@ public class Preiskonzept {
      * @return preis
      */
     public double getPreisEinzelkarteErmaessigt() {
+        if (preisEinzelkarteErmaessigt == null) {
+            return 0;
+        }
         return preisEinzelkarteErmaessigt;
     }
 
@@ -88,6 +105,9 @@ public class Preiskonzept {
      * @return massenrabatt
      */
     public double getMassenRabatt() {
+        if (massenRabatt == null) {
+            return 1;
+        }
         return massenRabatt;
     }
 
@@ -106,6 +126,9 @@ public class Preiskonzept {
      * @return fb tarif
      */
     public double getFruehbadetarif() {
+        if (fruehbadetarif == null) {
+            return 1;
+        }
         return fruehbadetarif;
     }
 
@@ -160,6 +183,9 @@ public class Preiskonzept {
      * @return sauna preis
      */
     public double getSaunaAufpreis() {
+        if (saunaAufpreis == null) {
+            return 0;
+        }
         return saunaAufpreis;
     }
 

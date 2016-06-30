@@ -58,8 +58,14 @@ public class Tickets {
      * @param anzahl Anzahl
      */
     public void addTicket(int art, int anzahl) {
-        // todo assert art is correct
+        if (((long) tickets[art]) + anzahl > Integer.MAX_VALUE) {
+            tickets[art] = Integer.MAX_VALUE;
+            return;
+        }
         tickets[art] += anzahl;
+        if (tickets[art] < 0) {
+            tickets[art] = 0;
+        }
     }
 
     /**
